@@ -2,6 +2,7 @@
 // General
 //==================================================================================================================
 #define ASYNC_OBSERVABLE // Use an async observable
+#define PUBLISH_RECONNECTABLE // Applies PublishReconnectable helper from Bonsai and RefCount like the real faulting case
 
 //==================================================================================================================
 // Control how the observable ends (pick one or none)
@@ -79,8 +80,10 @@ IObservable<int> source = Observable.Create<int>((observer) =>
 });
 #endif
 
-// These do not seem to affect the outcome
-//source = source.PublishReconnectable().RefCount();
+// The real scenario applies these
+#if PUBLISH_RECONNECTABLE
+source = source.PublishReconnectable().RefCount();
+#endif
 
 #if TAKE_3_ONLY
 source = source.Take(3);
